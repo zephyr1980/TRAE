@@ -16,6 +16,38 @@ export function initReferenceList({ listEl, searchEl, nameEl, originEl, statsEl,
         <li>Body <span>${t.body ?? '-'}</span></li>
       `;
     }
+    const container = document.getElementById('selected-ref-info');
+    if (container) {
+      let tags = container.querySelector('#ref-features');
+      let note = container.querySelector('#ref-note');
+      if (!tags) {
+        tags = document.createElement('div');
+        tags.id = 'ref-features';
+        tags.className = 'ref-tags';
+        container.appendChild(tags);
+      }
+      if (!note) {
+        note = document.createElement('p');
+        note.id = 'ref-note';
+        note.className = 'ref-note';
+        container.appendChild(note);
+      }
+      const feats = Array.isArray(info.features) ? info.features : [];
+      if (feats.length > 0) {
+        tags.innerHTML = feats.map(f => `<span class="tag">${f}</span>`).join('');
+        tags.style.display = '';
+      } else {
+        tags.innerHTML = '';
+        tags.style.display = 'none';
+      }
+      if (info.notes) {
+        note.textContent = info.notes;
+        note.style.display = '';
+      } else {
+        note.textContent = '';
+        note.style.display = 'none';
+      }
+    }
     if (tileEl) {
       tileEl.innerHTML = '';
       const emblem = getEffectiveEmblem(id);
