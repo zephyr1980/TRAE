@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>마이크로팩토리 — 맥주 공정</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+  </head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-title">MicroFactory</span>
+        <span class="brand-sub">Beer Edition</span>
+      </div>
+      <nav class="nav-menu">
+        <button class="nav-btn is-active" data-tab="tab-home">Home</button>
+        <button class="nav-btn" data-tab="tab-simulator">Simulator</button>
+      </nav>
+    </aside>
+
+    <div class="main-content">
+      <!-- HOME TAB -->
+      <section id="tab-home" class="tab-pane is-active">
+        <div class="beer-landing">
+          <div class="bubbles">
+            <!-- 기포 애니메이션을 위한 요소들 -->
+            <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+            <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+            <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+            <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+          </div>
+          
+          <div class="scroll-section">
+            <div class="section-content reveal intro-content">
+              <h2 class="landing-title">손 안의 마이크로팩토리</h2>
+              <p class="landing-desc">당신만의 맥주를 설계하세요.</p>
+              <span class="scroll-hint">아래로 스크롤 ↓</span>
+            </div>
+          </div>
+          
+          <!-- 인터뷰 섹션 추가 -->
+          <div class="scroll-section">
+            <div class="section-content reveal interview-card">
+              <div class="quote-mark">"</div>
+              <p class="interview-text">
+                처음엔 작은 냄비에서 시작했죠. 온도 1도, 효모 1그램이 맛을 어떻게 바꾸는지 아는 순간, 누구나 자신만의 브루어리를 꿈꾸게 됩니다. 이 시뮬레이터가 그 첫걸음을 완벽하게 도와줄 겁니다.
+              </p>
+              <div class="interview-author">
+                <strong>김맥주 대표</strong>
+                <span>수제 맥주 브루어리 '크래프트 랩' 창업자</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="scroll-section">
+            <div class="section-content reveal">
+              <h2 class="landing-title">9단계 정교한 공정</h2>
+              <p class="landing-desc">물, 몰트, 홉, 효모.<br>상업 브루어리의 핵심 공정을 그대로 가져왔습니다.</p>
+            </div>
+          </div>
+          
+          <div class="scroll-section">
+            <div class="section-content reveal">
+              <h2 class="landing-title">나만의 레시피 시뮬레이션</h2>
+              <p class="landing-desc">온도 1도, 홉 1그램이 만드는 풍미의 차이.<br>제조 전 미리 확인하고 완벽한 레시피를 완성하세요.</p>
+            </div>
+          </div>
+          
+          <div class="scroll-section">
+            <div class="section-content reveal">
+              <h2 class="landing-title">상용화의 길</h2>
+              <p class="landing-desc">레시피를 넘어, 브루어리 창업을 위한 원가와 패키징까지.</p>
+              <button id="btn-start" class="btn-primary">시뮬레이터 시작하기</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SIMULATOR TAB -->
+      <section id="tab-simulator" class="tab-pane">
+        <main class="sim-container">
+          <header class="page-header">
+            <h1>마이크로팩토리 — 맥주 공정</h1>
+          </header>
+
+          <!-- 1. 공정 파이프라인 (가로형 타임라인) -->
+          <div class="pipeline-container">
+            <div class="pipeline-track" id="pipeline-track"></div>
+          </div>
+
+          <div class="grid">
+            <!-- 좌측: 세계 지도 기반 레퍼런스 선택 -->
+            <aside id="map-panel" aria-label="레퍼런스 맥주 선택">
+              <h2 class="panel-title-sm">월드 베스트 레퍼런스</h2>
+              <p class="step-desc">리스트에서 대표 맥주를 선택하세요. (국기·국가·맥주명)</p>
+              <div class="ref-filter">
+                <input id="ref-search" type="text" placeholder="검색: 국가 또는 맥주명">
+              </div>
+              <div id="ref-list" class="ref-list"></div>
+              
+              <div id="selected-ref-info" class="selected-ref-info">
+                <div id="ref-tile" class="ref-logo-lg"></div>
+                <h3 id="ref-name-display">Sierra Nevada Pale Ale</h3>
+                <p id="ref-origin-display">🇺🇸 미국</p>
+                <ul id="ref-target-stats" class="ref-stats"></ul>
+              </div>
+            </aside>
+
+            <!-- 중앙: 단계 상세 패널 -->
+            <div class="sim-main-col">
+              <section id="detail-panel" aria-label="단계 상세">
+                <h2 class="panel-title-sm" id="detail-title">단계 상세</h2>
+                <p class="step-desc" id="detail-desc"></p>
+                <div id="detail-body"></div>
+              </section>
+            </div>
+            
+            <!-- 우측: 시각적 결과 및 누적 히스토리 패널 -->
+            <aside id="cost-panel" aria-label="결과 요약">
+              <h2 class="panel-title-sm">실시간 맥주 상태</h2>
+
+              <!-- 동적 액체 인디케이터 (비커 -> 맥주잔 + 배경) -->
+              <div class="beaker-container">
+                <div class="glass-bg">
+                  <div class="gwanghwamun-view"></div>
+                </div>
+                <div class="beaker pint-glass">
+                  <div class="liquid" id="liquid-level">
+                    <div class="bubbles-sim" id="liquid-bubbles"></div>
+                  </div>
+                  <div class="foam" id="liquid-foam"></div>
+                </div>
+                <div class="pkg-visual pkg-bottle" id="pkg-bottle"></div>
+                <div class="pkg-visual pkg-can" id="pkg-can"></div>
+                <div class="pkg-visual pkg-keg" id="pkg-keg"></div>
+                <div class="beaker-status" id="beaker-status-text">준비 중</div>
+              </div>
+              
+              <!-- 인디케이터 게이지 영역 -->
+              <div class="indicators">
+                <div class="indicator-group">
+                  <div class="ind-header">
+                    <span>ABV (도수)</span>
+                    <span id="ind-abv-val">0.0%</span>
+                  </div>
+                  <div class="ind-track" title="APA 표준: 4.5 ~ 6.2%">
+                    <div class="ind-range" style="left: 45%; width: 17%;"></div>
+                    <div class="ind-marker ref-marker" id="ref-marker-abv" style="left: 56%;" title="레퍼런스"></div>
+                    <div class="ind-marker my-marker" id="marker-abv" style="left: 0%;"></div>
+                  </div>
+                </div>
+
+                <div class="indicator-group">
+                  <div class="ind-header">
+                    <span>IBU (쓴맛)</span>
+                    <span id="ind-ibu-val">0</span>
+                  </div>
+                  <div class="ind-track" title="APA 표준: 30 ~ 50">
+                    <div class="ind-range" style="left: 30%; width: 20%;"></div>
+                    <div class="ind-marker ref-marker" id="ref-marker-ibu" style="left: 38%;" title="레퍼런스"></div>
+                    <div class="ind-marker my-marker" id="marker-ibu" style="left: 0%;"></div>
+                  </div>
+                </div>
+
+                <div class="indicator-group">
+                  <div class="ind-header">
+                    <span>Body (바디감)</span>
+                    <span id="ind-body-val">가벼움</span>
+                  </div>
+                  <div class="ind-track" title="맥주의 입안 질감">
+                    <div class="ind-range" style="left: 40%; width: 20%;"></div>
+                    <div class="ind-marker ref-marker" id="ref-marker-body" style="left: 50%;" title="레퍼런스"></div>
+                    <div class="ind-marker my-marker" id="marker-body" style="left: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <hr class="panel-divider">
+
+              <!-- 누적 히스토리 패널 (원가 요약 대체) -->
+              <section id="history-panel" class="history-panel" aria-label="누적 레시피 히스토리">
+                <h2 class="panel-title-sm">내 레시피 누적 기록</h2>
+                <div id="history-body" class="history-content">
+                  <p class="empty-hint">공정을 진행하며 파라미터를 조절해 보세요.</p>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </main>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

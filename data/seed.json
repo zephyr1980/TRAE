@@ -1,0 +1,147 @@
+{
+  "version": "0.1.0",
+  "styles": [
+    {
+      "id": "style_apa",
+      "name": "American Pale Ale",
+      "metrics": {
+        "IBU": { "min": 30, "max": 50 },
+        "SRM": { "min": 5, "max": 10 },
+        "ABV": { "min": 4.5, "max": 6.2 }
+      }
+    }
+  ],
+  "steps": [
+    {
+      "id": "step_01",
+      "name": "원료 분쇄",
+      "description": "맥아를 빻아 물이 잘 스며들게 합니다. 롤러 간격이 좁을수록 맛이 진해지지만 여과가 어려워질 수 있습니다.",
+      "params": [
+        { "key": "crush_gap_mm", "label": "롤러 간격", "type": "number", "unit": "mm", "default": 1.1, "min": 0.5, "max": 2.0, "step": 0.1 }
+      ],
+      "durationMin": { "default": 20 }
+    },
+    {
+      "id": "step_02",
+      "name": "당화 (맥아 끓이기)",
+      "description": "따뜻한 물에 맥아를 우려내어 단맛(당)을 뽑아냅니다. 온도가 높을수록 맥주의 바디감이 묵직해집니다.",
+      "params": [
+        { "key": "mash_temp_c", "label": "당화 온도", "type": "number", "unit": "°C", "default": 66, "min": 60, "max": 72, "step": 0.5 },
+        { "key": "mash_time_min", "label": "당화 시간", "type": "number", "unit": "분", "default": 60, "min": 30, "max": 120, "step": 5 }
+      ],
+      "durationMin": { "default": 60 }
+    },
+    {
+      "id": "step_03",
+      "name": "여과 (찌꺼기 분리)",
+      "description": "단맛이 우러난 맑은 맥즙만 걸러내고, 남은 보리 껍질을 분리하는 과정입니다.",
+      "params": [],
+      "durationMin": { "default": 30 }
+    },
+    {
+      "id": "step_04",
+      "name": "홉 끓이기",
+      "description": "맥즙을 팔팔 끓이면서 홉을 넣습니다. 오래 끓일수록 맥주 특유의 쌉싸름한 맛이 강해집니다.",
+      "params": [
+        { "key": "boil_time_min", "label": "끓임 시간", "type": "number", "unit": "분", "default": 60, "min": 30, "max": 90, "step": 5 }
+      ],
+      "durationMin": { "default": 60 }
+    },
+    {
+      "id": "step_05",
+      "name": "맥즙 냉각",
+      "description": "효모가 활동하기 좋은 온도로 뜨거운 맥즙을 빠르게 식혀줍니다.",
+      "params": [
+        { "key": "chill_temp_c", "label": "목표 온도", "type": "number", "unit": "°C", "default": 18, "min": 10, "max": 25, "step": 1 }
+      ],
+      "durationMin": { "default": 20 }
+    },
+    {
+      "id": "step_06",
+      "name": "발효",
+      "description": "효모를 넣고 기다립니다. 당분이 알코올과 탄산으로 변하며 진짜 맥주가 되는 마법 같은 시간입니다.",
+      "params": [
+        { "key": "ferm_temp_c", "label": "발효 온도", "type": "number", "unit": "°C", "default": 18, "min": 15, "max": 25, "step": 0.5 },
+        { "key": "ferm_days", "label": "발효 일수", "type": "number", "unit": "일", "default": 10, "min": 5, "max": 21, "step": 1 }
+      ],
+      "durationMin": { "default": 14400 }
+    },
+    {
+      "id": "step_07",
+      "name": "숙성",
+      "description": "발효가 끝난 맥주를 차갑게 보관하여 맛을 깔끔하게 다듬고 불순물을 가라앉힙니다.",
+      "params": [
+        { "key": "condition_days", "label": "숙성 일수", "type": "number", "unit": "일", "default": 7, "min": 3, "max": 21, "step": 1 }
+      ],
+      "durationMin": { "default": 10080 }
+    },
+    {
+      "id": "step_08",
+      "name": "탄산 주입",
+      "description": "맥주의 청량감을 결정합니다. 탄산 레벨을 조절하여 부드럽거나 톡 쏘는 식감을 만듭니다.",
+      "params": [
+        { "key": "co2_volumes", "label": "탄산 레벨", "type": "number", "unit": "vol", "default": 2.4, "min": 1.5, "max": 3.0, "step": 0.1 }
+      ],
+      "durationMin": { "default": 60 }
+    },
+    {
+      "id": "step_09",
+      "name": "패키징",
+      "description": "완성된 맥주를 병, 캔, 또는 케그에 담아 세상에 선보일 준비를 합니다.",
+      "params": [
+        { "key": "package", "label": "포장 형태", "type": "select", "options": ["bottle (병)", "can (캔)", "keg (케그)"], "default": "bottle (병)" }
+      ],
+      "durationMin": { "default": 60 }
+    }
+  ],
+  "recipes": [
+    {
+      "id": "recipe_apa_basic",
+      "name": "APA 기본 레시피",
+      "styleRef": "style_apa",
+      "batchSizeL": 20,
+      "brewhouseEfficiency": 0.72,
+      "grains": [
+        { "name": "Pale Malt (US 2-Row)", "kg": 4.0, "lovibond": 2 },
+        { "name": "Crystal 20L", "kg": 0.3, "lovibond": 20 }
+      ],
+      "hops": [
+        { "name": "Cascade", "form": "pellet", "alpha": 6.0, "g": 25, "timeMin": 60 },
+        { "name": "Cascade", "form": "pellet", "alpha": 6.0, "g": 20, "timeMin": 15 },
+        { "name": "Cascade", "form": "pellet", "alpha": 6.0, "g": 25, "timeMin": 5 }
+      ],
+      "yeast": { "name": "US-05", "attenuation": 0.78, "tempC": 18 },
+      "targets": { "OG": 1.05, "FG": 1.01, "ABV": 5.3, "IBU": 40, "SRM": 7 },
+      "steps": [
+        { "ref": "step_01", "params": { "crush_gap_mm": 1.1 } },
+        { "ref": "step_02", "params": { "mash_temp_c": 66, "mash_time_min": 60 } },
+        { "ref": "step_03", "params": {} },
+        { "ref": "step_04", "params": { "boil_time_min": 60 } },
+        { "ref": "step_05", "params": { "chill_temp_c": 18 } },
+        { "ref": "step_06", "params": { "ferm_temp_c": 18, "ferm_days": 10 } },
+        { "ref": "step_07", "params": { "condition_days": 7 } },
+        { "ref": "step_08", "params": { "co2_volumes": 2.4 } },
+        { "ref": "step_09", "params": { "package": "bottle" } }
+      ]
+    }
+  ],
+  "costModel": {
+    "currency": "KRW",
+    "ingredients": {
+      "malt_krw_per_kg": 3000,
+      "hops_krw_per_100g": 8000,
+      "yeast_krw_per_pack": 4000
+    },
+    "energy": { "kwh_krw": 150, "boil_kwh_per_batch": 5 },
+    "packaging": { "bottle_krw": 300, "cap_label_krw": 80, "can_krw": 250, "keg_krw": 0 },
+    "loss": { "mash_efficiency": 0.72, "boil_off_l_per_hr": 3, "trub_loss_l": 1.5 }
+  },
+  "references": [
+    {
+      "id": "ref_sierra_nevada_pa",
+      "name": "Sierra Nevada Pale Ale",
+      "styleRef": "style_apa",
+      "metrics": { "IBU": 38, "SRM": 10, "ABV": 5.6 }
+    }
+  ]
+}
